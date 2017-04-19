@@ -31,15 +31,14 @@ Eliminate findViewById calls by using @BindView on fields:
 ```java
 class ExampleActivity extends Activity {
   // Automatically finds each field by the specified ID.
-  @BindView(R.id.title) TextView title;
-  @BindView(R.id.subtitle) TextView subtitle;
-  @BindView(R.id.footer) TextView footer;
+  @BindView(R.id.textView) TextView textView;
+  @BindView(R.id.textView2) TextView textView2;
+  @BindView(R.id.textView3) TextView textView3;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.simple_activity);
+    setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    // TODO Use fields...
   }
 }
 ```
@@ -53,7 +52,7 @@ public class FancyFragment extends Fragment {
   private Unbinder unbinder;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fancy_fragment, container, false);
+    View view = inflater.inflate(R.layout.fragment_main, container, false);
     unbinder = ButterKnife.bind(this, view);
     // TODO Use fields...
     return view;
@@ -78,7 +77,7 @@ public class MyAdapter extends BaseAdapter {
     if (view != null) {
       holder = (ViewHolder) view.getTag();
     } else {
-      view = inflater.inflate(R.layout.whatever, parent, false);
+      view = inflater.inflate(R.layout.list_item, parent, false);
       holder = new ViewHolder(view);
       view.setTag(holder);
     }
@@ -104,21 +103,17 @@ This will save you the need to ever write findViewById ever again!
 
 Eliminate anonymous inner-classes for listeners by annotating methods with @OnClick and others:
 ```java
-@OnClick(R.id.submit)
+@OnClick(R.id.button1)
 public void sayHi(Button button) {
-  button.setText("Hello!");
+  Toast.makeText(this, "Submitted", LENGTH_SHORT).show();
 }
 ```
 
 We can attach multiple views to the same listener with:
 ```java
-@OnClick({ R.id.door1, R.id.door2, R.id.door3 })
-public void pickDoor(DoorView door) {
-  if (door.hasPrizeBehind()) {
-    Toast.makeText(this, "You win!", LENGTH_SHORT).show();
-  } else {
-    Toast.makeText(this, "Try again", LENGTH_SHORT).show();
-  }
+@OnClick({ R.id.button2, R.id.button3})
+public void multipleButtonHandler(Button btn) {
+    Toast.makeText(this, "Multiple Button Handler", LENGTH_SHORT).show();
 }
 ```
 
@@ -130,11 +125,9 @@ Eliminate resource lookups in your Java code by using resource annotations on fi
 
 ```java
 class ExampleActivity extends Activity {
-  @BindString(R.string.title) String title;
-  @BindDrawable(R.drawable.graphic) Drawable graphic;
-  @BindColor(R.color.red) int red; // int or ColorStateList field
-  @BindDimen(R.dimen.spacer) Float spacer; // int (for pixel size) or float (for exact value) field
-  // ...
+  @BindString(R.string.app_name) String title;
+  @BindDrawable(R.mipmap.ic_launcher) Drawable graphic;
+  @BindColor(R.color.colorPrimary) int red; // int or ColorStateList field
 }
 ```
 
